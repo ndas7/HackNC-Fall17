@@ -7,11 +7,13 @@
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   StyleSheet,
   Text,
   Image,
   View,
-  ListView
+  ListView,
+  TouchableHighlight
 } from 'react-native';
 
 // const instructions = Platform.select({
@@ -23,6 +25,10 @@ import {
 
 
 export default class App extends Component {
+
+   _onPressButton() {
+      Alert.alert('Great Choice,\nHappy Cooking!')
+    }
    constructor(props) {
     super(props);
     this.state = {
@@ -64,32 +70,51 @@ componentDidMount() {
       );
     }
 
-    return (
+   return (
       <View style={{flex: 1, paddingTop: 20}}>
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => <Text>{rowData.title}, {rowData.image}</Text>}
+          renderRow={(rowData) => 
+            <View style={styles.container}>
+            <Image source={{uri: rowData.image}} style={{width: 250, height: 250, borderRadius: 20}} /> 
+            <TouchableHighlight onPress={this._onPressButton} underlayColor="white">
+             <View style={styles.button}>
+            <Text style={styles.buttonText}>Recipe: {rowData.title}, {"\n"}
+            No. of Likes: {rowData.likes}{"\n"}
+            {"\n"}
+            </Text>
+             </View>
+            </TouchableHighlight>
+            </View>
+          }
         />
       </View>
     );
   }
 }
 
-/// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#F5FCFF',
-//   },
-//   welcome: {
-//     fontSize: 20,
-//     textAlign: 'center',
-//     margin: 10,
-//   },
-//   instructions: {
-//     textAlign: 'center',
-//     color: '#333333',
-//     marginBottom: 5,
-//   },
-// });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 12,
+    paddingTop: 50,
+    //flexDirection: 'row',
+    alignItems: 'center',
+  },
+  // text: {
+  //   marginLeft: 18,
+  //   fontSize: 20,
+  // },
+ button: {
+    //marginBottom: 30,
+    width: 260,
+    alignItems: 'center',
+    backgroundColor: 'skyblue',
+    borderRadius: 20
+  },
+  buttonText: {
+    padding: 10,
+    fontSize: 18,
+    color: 'white'
+  }
+});
